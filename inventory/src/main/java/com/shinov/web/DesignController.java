@@ -13,8 +13,8 @@ import com.shinov.Inventory;
 import com.shinov.Item;
 import com.shinov.Item.Type;
 
-import DAL.DAO;
 import DAL.ItemRepository;
+import DAL.ItemsDAO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -23,24 +23,23 @@ import lombok.extern.slf4j.Slf4j;
 public class DesignController {
 	@GetMapping
 	public String showDesignForm(Model model) {
-
-		List<Item> items = Arrays.asList(ItemRepository.findAll());
+		
+		ItemsDAO itemsDAO = new ItemsDAO();
+		
+		List<Item> items = itemsDAO.findAll();
+		
 		Type[] types = Item.Type.values();
+		
 		for (Type type : types) {
-			model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
+			model.addAttribute(type.toString().toLowerCase(), filterByType(items, type));
 		}
-		model.addAttribute("design", new Inventory("My inventory"));
-		Item item = DAO.getById("234");
-
-		model.addAttribute("item", item);
-		System.out.println(item.getName());
+		model.addAttribute("design", new Inventory());
 		return "design";
 	}
 
 
-
+	// What the heck? No clue
 	private List<Item> filterByType(List<Item> ingredients, Type type) {
-
 		return ingredients.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
 
 	}

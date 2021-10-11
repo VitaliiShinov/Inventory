@@ -11,5 +11,5 @@ import com.shinov.Item;
 public interface ItemRepository{
 	List<Item> findAll();
 
-	Item getById(String ID);
+	Item findByID(String ID);
 }

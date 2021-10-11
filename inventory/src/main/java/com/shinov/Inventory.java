@@ -20,6 +20,9 @@ import javax.persistence.PrePersist;
 @Data
 @Entity
 public class Inventory {
+	
+	public Inventory() {}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -29,10 +32,5 @@ public class Inventory {
 	@ManyToMany(targetEntity = Item.class)
 	private List<Item> item;
 
-	@PrePersist
-	void createdAt() {
-		this.createdAt = new Date();
-	}
-	
 
 }
