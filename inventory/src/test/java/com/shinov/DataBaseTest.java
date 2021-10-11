@@ -18,4 +18,11 @@ public class DataBaseTest {
 			System.out.println(i.getName());
 	}
 
+	@Test
+	public void findByID() {
+		ItemsDAO dao = new ItemsDAO();
+		Item item = dao.findByID("234");
+		System.out.println(item.getName());
+	}
+
 }

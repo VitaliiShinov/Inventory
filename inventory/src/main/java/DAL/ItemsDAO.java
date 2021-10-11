@@ -59,7 +59,31 @@ public class ItemsDAO implements ItemRepository {
 	@Override
 	public Item findByID(String ID) {
 
-		return null;
+		Connection connection = getConnection();
+		Item item = null;
+
+		try {
+			PreparedStatement statement = connection.prepareStatement("select * from item where id = "+ ID);
+
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				
+				item = new Item();
+				item.setId(result.getString(1));
+
+				item.setDefense(result.getInt(2));
+				item.setAttack(result.getInt(3));
+
+				item.setName(result.getString(4));
+				item.setType(Type.values()[result.getInt(5)]);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return item;
 	}
 
 }
