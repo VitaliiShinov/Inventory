@@ -16,7 +16,7 @@ public class Item {
 	@Column(name = "id")
 	@Setter
 	@Getter
-	private String id;
+	private int id;
 
 	@Column(name = "name")
 	@Setter

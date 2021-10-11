@@ -3,40 +3,117 @@ package com.shinov.parser;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
+
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.shinov.Item;
+import com.shinov.Item.Type;
 
 public class Parser {
 
 	private static String dir;
+	private static int ID = 0;
 
-	public static Elements getElementsByTag(String url, String tag) {
+	public static List<Item> getListOfItems() {
+		List<Item> items = new ArrayList<>();
+		List<Elements> elements = getElements("https://heroes.thelazy.net/index.php/List_of_artifacts_(HotA)");
+		Item item;
+		Random random = new Random();
+		
+		for (Elements tr : elements) {
+
+			for (Element td : tr)
+
+				switch (td.select("a").text()) {
+				case "Torso":
+					item = new Item();
+					item.setId(ID++);
+					item.setName(tr.get(0).text());
+
+
+					item.setAttack(random.nextInt(10));
+					item.setDefense(random.nextInt(10));
+					
+					item.setType(Type.ARMOR);
+					items.add(item);
+					break;
+
+				case "Helm":
+					item = new Item();
+					item.setId(ID++);
+					item.setName(tr.get(0).text());
+
+
+					item.setAttack(random.nextInt(10));
+					item.setDefense(random.nextInt(10));
+					item.setType(Type.HELM);
+					items.add(item);
+					break;
+					
+				case "Weapon":
+					item = new Item();
+					item.setId(ID++);
+					item.setName(tr.get(0).text());
+
+
+					item.setAttack(random.nextInt(10));
+					item.setDefense(random.nextInt(10));
+					item.setType(Type.WEAPON);
+					items.add(item);
+					break;
+				case "Misc" :
+				case "Feet":
+				case "Necklace":
+				case "Cape":	
+					item = new Item();
+					item.setId(ID++);
+					item.setName(tr.get(0).text());
+
+
+					item.setAttack(random.nextInt(10));
+					item.setDefense(random.nextInt(10));
+					item.setType(Type.ARTIFACT);
+					items.add(item);
+					break;
+				}
+		}
+		return items;
+	}
+
+	protected static List<Elements> getElements(String url) {
+		List<Elements> result = new ArrayList<Elements>();
+
 		String html = null;
 		URL realURL;
 		try {
 			realURL = new URL(url);
 			savePage(realURL);
-			 html = getFileContent();
+			html = getFileContent();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		Document doc = Jsoup.parse(html);
-
-		return doc.getElementsByTag(tag);
+		Elements elements = doc.getElementsByTag("tr");
+		for (Element e : elements) {
+			result.add(e.select("td"));
+		}
+		return result;
 	}
 
 	private static void savePage(URL url) {

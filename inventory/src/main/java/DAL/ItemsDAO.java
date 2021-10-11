@@ -39,7 +39,7 @@ public class ItemsDAO implements ItemRepository {
 			while (result.next()) {
 				
 				Item item = new Item();
-				item.setId(result.getString(1));
+				item.setId(result.getInt(1));
 
 				item.setDefense(result.getInt(2));
 				item.setAttack(result.getInt(3));
@@ -70,7 +70,7 @@ public class ItemsDAO implements ItemRepository {
 			while (result.next()) {
 				
 				item = new Item();
-				item.setId(result.getString(1));
+				item.setId(result.getInt(1));
 
 				item.setDefense(result.getInt(2));
 				item.setAttack(result.getInt(3));

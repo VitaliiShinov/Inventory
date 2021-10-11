@@ -11,16 +11,14 @@ import org.junit.jupiter.api.Test;
 
 import com.shinov.parser.Parser;
 
-
 class ParserTest {
 
 	@Test
 	void test() {
-		Elements el = Parser.getElementsByTag("https://www.google.com/", "a");
-		System.out.println(el.size());
-		for(Element e:el) {
-			System.out.println(e);
+		for(Item i : Parser.getListOfItems()){
+			System.out.println(i.getName() + " " + i.getType()+ " " + i.getAttack()+ " " + i.getDefense());
 		}
+
 	}
 
 }
