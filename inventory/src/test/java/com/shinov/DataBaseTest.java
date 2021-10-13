@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.shinov.parser.Parser;
+
 import DAL.ItemsDAO;
 
 public class DataBaseTest {
@@ -18,11 +20,21 @@ public class DataBaseTest {
 			System.out.println(i.getName());
 	}
 
+//	@Test
+//	public void findByID() {
+//		ItemsDAO dao = new ItemsDAO();
+//		Item item = dao.findByID("234");
+//		System.out.println(item.getName());
+//	}
+
 	@Test
-	public void findByID() {
+	public void saveAll() {
 		ItemsDAO dao = new ItemsDAO();
-		Item item = dao.findByID("234");
-		System.out.println(item.getName());
+
+		List<Item> items = Parser.getListOfItems();
+
+		dao.saveAll(items);
+
 	}
 
 }

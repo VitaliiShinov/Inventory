@@ -16,9 +16,9 @@ class ParserTest {
 	@Test
 	void test() {
 		for(Item i : Parser.getListOfItems()){
-			System.out.println(i.getName() + " " + i.getType()+ " " + i.getAttack()+ " " + i.getDefense());
+			System.out.println(i.getId() + " "+ i.getName() + " " + i.getType()+ " " + i.getAttack()+ " " + i.getDefense());
 		}
 
 	}
 
-}
+} 
