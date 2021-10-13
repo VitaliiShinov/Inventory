@@ -8,11 +8,27 @@
 <body>
 	<h1>Choose your equipment!</h1>
 
-	<form action="/design" method=post>
-		<input type="submit"  name="button" value="Generate inventory" />
-		<input type="submit" name="button" value="2" />
-		<input type="submit" name="button" value="3" />
+	<form action="/design" method=get>
+		<input type="submit" name="button" value="Generate inventory" /> <input
+			type="submit" name="button" value="2" /> <input type="submit"
+			name="button" value="3" />
 	</form>
+
+	<table>
+		<tr>
+			<th>NAME</th>
+			<th>CLASS</th>
+			<th>ATT</th>
+			<th>DEF</th>
+		</tr>
+		<tr th:each="item : ${items}">
+
+			<td th:text="${item.getName()}"></td>
+			<td th:text="${item.getType()}"></td>
+			<td th:text="${item.getAttack()}"></td>
+			<td th:text="${item.getDefense()}"></td>
+		</tr>
+	</table>
 
 </body>
 </html>
