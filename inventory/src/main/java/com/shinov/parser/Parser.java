@@ -42,7 +42,6 @@ public class Parser {
 				switch (td.select("a").text()) {
 				case "Torso":
 					item = new Item();
-					item.setId(ID++);
 					item.setName(tr.get(0).text());
 
 
@@ -55,7 +54,6 @@ public class Parser {
 
 				case "Helm":
 					item = new Item();
-					item.setId(ID++);
 					item.setName(tr.get(0).text());
 
 
@@ -67,7 +65,6 @@ public class Parser {
 					
 				case "Weapon":
 					item = new Item();
-					item.setId(ID++);
 					item.setName(tr.get(0).text());
 
 
@@ -81,7 +78,6 @@ public class Parser {
 				case "Necklace":
 				case "Cape":	
 					item = new Item();
-					item.setId(ID++);
 					item.setName(tr.get(0).text());
 
 

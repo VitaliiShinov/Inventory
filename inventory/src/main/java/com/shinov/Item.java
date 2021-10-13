@@ -12,6 +12,13 @@ import lombok.Setter;
 @Entity
 public class Item {
 
+	private static int amount = 0;
+	
+	public Item() {
+		this.id = amount++;
+	}
+	
+	
 	@Id
 	@Column(name = "id")
 	@Setter

@@ -7,9 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shinov.Inventory;
 import com.shinov.Item;
@@ -22,38 +25,43 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/design")
+@RequestMapping(value = "/design", method = RequestMethod.POST)
 public class DesignController {
 	@GetMapping
-	public String showDesignForm(Model model) {
-		ItemsDAO itemsDAO = new ItemsDAO();
-		
-		List<Item> items = itemsDAO.findAll();
-		
-		Type[] types = Item.Type.values();
-		
-		for (Type type : types) {
-			model.addAttribute(type.toString().toLowerCase(), filterByType(items, type));
-		}
-		model.addAttribute("design", new Inventory());
+	public String showDesignForm(Model model, @RequestParam(value = "button") String s) {
+		System.out.println(s);
+		doPost(s);
+
+//		ItemsDAO itemsDAO = new ItemsDAO();
+//		
+//		List<Item> items = itemsDAO.findAll();
+//		
+//		Type[] types = Item.Type.values();
+//		
+//		for (Type type : types) {
+//			model.addAttribute(type.toString().toLowerCase(), filterByType(items, type));
+//		}
+//		model.addAttribute("design", new Inventory());
 		return "design";
 	}
 
+	private void doPost(String s) {
+		
+		if (s.equals("Generate inventory"))
+			generateInventory();
+	}
 
 	// What the heck? No clue
 	private List<Item> filterByType(List<Item> ingredients, Type type) {
 		return ingredients.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
 
 	}
-	
-	@GetMapping("/gen")
-	public String generateInventory() {
-		System.out.println(123);
+
+	private String generateInventory() {
 		ItemsDAO dao = new ItemsDAO();
 		dao.deleteAll();
 		dao.saveAll(Parser.getListOfItems());
 		return "design";
 	}
-//	
 
 }

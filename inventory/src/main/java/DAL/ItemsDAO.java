@@ -120,10 +120,9 @@ public class ItemsDAO implements ItemRepository {
 	@Override
 	public void deleteAll() {
 		Connection connection = getConnection();
-
 		try {
-			PreparedStatement statement = connection.prepareStatement("delete from item");
-			statement.executeQuery();
+			PreparedStatement statement = connection.prepareStatement("delete from item;");
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
