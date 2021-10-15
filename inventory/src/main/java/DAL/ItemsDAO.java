@@ -128,4 +128,34 @@ public class ItemsDAO implements ItemRepository {
 		}
 	}
 
+	@Override
+	public List<Item> getByType(Type type) {
+		Connection connection = getConnection();
+		List<Item> items = new ArrayList<>();
+
+		try {
+			PreparedStatement statement = connection.prepareStatement("select * from item WHERE type="+type.ordinal());
+
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+
+				Item item = new Item();
+				item.setId(result.getInt(1));
+
+				item.setDefense(result.getInt(2));
+				item.setAttack(result.getInt(3));
+
+				item.setName(result.getString(4));
+				item.setType(Type.values()[result.getInt(5)]);
+				items.add(item);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return items;
+	}
+
 }

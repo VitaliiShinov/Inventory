@@ -1,36 +1,36 @@
 package com.shinov;
 
-
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
-import lombok.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
-
-
 @Data
 @Entity
 public class Inventory {
-	
-	public Inventory() {}
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	@NonNull
-	private String name;
-	private Date createdAt;
-	@ManyToMany(targetEntity = Item.class)
-	private List<Item> item;
+	public Inventory() {
+	 items = new ArrayList<Item>();
+	}
 
+	@Id
+	private int id;
+
+	@ElementCollection(targetClass = Integer.class)
+	private List<Item> items;
+
+	public void addItem(Item item) {
+	
+		items.add(item);
+	}
 
 }
