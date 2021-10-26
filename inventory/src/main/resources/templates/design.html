@@ -9,10 +9,10 @@
 </head>
 <body>
 
-	<h1>Choose your equipment!</h1>
+	<h1><a href="/design">Choose your equipment!</a></h1>
 
 	<form action="/gen" method=get>
-		<input type="submit" name="button" value="Generate inventory" />
+		<input type="submit" value="Generate inventory" />
 	</form>
 	<form action="/send" method=get>
 
@@ -59,7 +59,23 @@
 		</div>
 	</div>
 
-	<div id="presets"></div>
+	<div id="presets">
+		<form action="/save">
+			<select name="preset">
+				<option>preset 1</option>
+				<option>preset 2</option>
+				<option>preset 3</option>
+				<option>preset 4</option>
+			</select> 
+			<input name= "button" type="submit" value="save" /> 
+			<input name= "button" type="submit"
+				value="load">
+		</form>
+
+
+
+
+	</div>
 </body>
 </html>
 

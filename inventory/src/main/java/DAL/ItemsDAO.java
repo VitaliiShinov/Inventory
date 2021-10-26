@@ -61,7 +61,7 @@ public class ItemsDAO implements ItemRepository {
 	}
 
 	@Override
-	public Item findByID(String ID) {
+	public Item findByID(int ID) {
 
 		Connection connection = getConnection();
 		Item item = null;

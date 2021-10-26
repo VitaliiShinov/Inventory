@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import com.shinov.parser.Parser;
 import DAL.InventoryDAO;
 import DAL.InventoryRepository;
 import DAL.ItemsDAO;
+import DAL.PresetsDAO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,7 +35,7 @@ public class DesignController {
 	private Player player;
 
 	@GetMapping(value = "/design")
-	public String showDesignForm(Model model, @ModelAttribute(value = "button") String s) {
+	public String showDesignForm(Model model) {
 
 		player = new Player();
 		player.addToInventory(new InventoryDAO().findAll());
@@ -48,22 +51,10 @@ public class DesignController {
 		InventoryDAO dao = new InventoryDAO();
 		Item item = dao.findById(s);
 
-		switch (item.getType()) {
-		case ARMOR:
-			player.setArmor(item);
-			break;
-		case ARTIFACT:
-			player.setArt(item);
-			break;
-		case WEAPON:
-			player.setWeapon(item);
-			break;
-		case HELM:
-			player.setHelm(item);
-			break;
-		}
+		changeGear(item);
 
-		
+		player.updateStats();
+		model.addAttribute("player", player);
 		System.out.println();
 		return "design";
 	}
@@ -108,17 +99,59 @@ public class DesignController {
 
 		items = dao2.findAll();
 
-		player.setArmor(items.get(0));
-
 		player.updateStats();
 		model.addAttribute("player", player);
 
 		return "design";
 	}
 
+	@GetMapping("/save")
+	private String save(Model model, HttpServletRequest request) {
+		
+		
+		
+		String preset = request.getParameter("preset");
+		int id = Integer.parseInt(preset.substring(preset.length() - 1));
+
+		PresetsDAO dao = new PresetsDAO();
+
+		if (request.getParameter("button").equals("save"))
+			dao.update(player.getItems(), id);
+		if (request.getParameter("button").equals("load")) {
+			List<Item> items = dao.findByID(id);
+			for (Item item : items)
+				changeGear(item);
+			
+		}
+		
+		player.updateStats();
+		model.addAttribute("player", player);
+
+		return "design";
+	}
+
+
+
 	private Item getRandomItem(List<Item> items) {
 		return items.get(new Random().nextInt(items.size()));
 
+	}
+
+	private void changeGear(Item item) {
+		switch (item.getType()) {
+		case ARMOR:
+			player.setArmor(item);
+			break;
+		case ARTIFACT:
+			player.setArt(item);
+			break;
+		case WEAPON:
+			player.setWeapon(item);
+			break;
+		case HELM:
+			player.setHelm(item);
+			break;
+		}
 	}
 
 }

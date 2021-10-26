@@ -11,8 +11,8 @@ import com.shinov.Item.Type;
 @Repository
 public interface ItemRepository{
 	List<Item> findAll();
-	Item findByID(String ID);
 	void saveAll(List<Item> items);
 	void deleteAll();
 	List<Item> getByType(Type type);
+	Item findByID(int ID);
 }

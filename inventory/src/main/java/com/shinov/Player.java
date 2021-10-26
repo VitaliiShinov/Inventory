@@ -1,5 +1,6 @@
 package com.shinov;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,6 +15,16 @@ import lombok.Setter;
 
 public class Player {
 
+	public List<Item> getItems(){
+		List<Item> items = new ArrayList<Item>();
+		items.add(helm);
+		items.add(weapon);
+		items.add(armor);
+		items.add(art);
+		return items;
+	}
+	
+	
 	public Player() {
 		this.setArt(Item.getEmptyItem());
 	
