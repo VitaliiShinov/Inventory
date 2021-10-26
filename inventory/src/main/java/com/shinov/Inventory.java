@@ -25,6 +25,7 @@ public class Inventory {
 	@Id
 	private int id;
 
+	@Getter
 	@ElementCollection(targetClass = Integer.class)
 	private List<Item> items;
 

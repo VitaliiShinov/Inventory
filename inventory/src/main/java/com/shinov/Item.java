@@ -11,13 +11,24 @@ import lombok.Setter;
 @Data
 @Entity
 public class Item {
-
-	private static int amount = 0;
+	private static Item emptyItem = new Item(0);
+	
+	private static int amount = 1;
 	
 	public Item() {
 		this.id = amount++;
 	}
 	
+	public static Item getEmptyItem() {
+		return emptyItem;
+	}
+	
+	private Item(int id) {
+		this.name = "No Item";
+		this.attack = 0;
+		this.defense = 0;
+		this.id = 0;
+	}
 	
 	@Id
 	@Column(name = "id")

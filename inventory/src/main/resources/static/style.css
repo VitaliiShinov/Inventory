@@ -1,0 +1,14 @@
+h1 {
+	color: red;
+}
+
+.selected {
+	background-color: brown;
+	color: #FFF;
+}
+
+td {
+	border: 1px #DDD solid;
+	padding: 5px;
+	cursor: pointer;
+}

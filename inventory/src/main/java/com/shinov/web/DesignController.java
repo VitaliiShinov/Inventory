@@ -9,11 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.shinov.Inventory;
 import com.shinov.Item;
 import com.shinov.Item.Type;
+import com.shinov.Player;
 import com.shinov.parser.Parser;
 
 import DAL.InventoryDAO;
@@ -23,32 +26,46 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping(value = "/design")
-public class DesignController {
-	private Inventory inventory = new Inventory();
-	@GetMapping 
-	public String showDesignForm(Model model, @ModelAttribute(value = "button") String s) {
-		
-		
-		doGet(s, model);
-	
-		ItemsDAO itemsDAO = new ItemsDAO();
-		
-		List<Item> items = itemsDAO.findAll();
-		
-//		Type[] types = Item.Type.values();
-//		
 
-//		model.addAttribute("design", new Inventory());
-		
-		
+public class DesignController {
+
+	private Player player;
+
+	@GetMapping(value = "/design")
+	public String showDesignForm(Model model, @ModelAttribute(value = "button") String s) {
+
+		player = new Player();
+		player.addToInventory(new InventoryDAO().findAll());
+
+		model.addAttribute("player", player);
+
 		return "design";
 	}
 
-	private void doGet(String s, Model model) {
+	@GetMapping(value = "/send")
+	public String updateGear(Model model, @ModelAttribute(value = "choose") int s) {
+
+		InventoryDAO dao = new InventoryDAO();
+		Item item = dao.findById(s);
+
+		switch (item.getType()) {
+		case ARMOR:
+			player.setArmor(item);
+			break;
+		case ARTIFACT:
+			player.setArt(item);
+			break;
+		case WEAPON:
+			player.setWeapon(item);
+			break;
+		case HELM:
+			player.setHelm(item);
+			break;
+		}
+
 		
-		if (s.equals("Generate inventory"))
-			generateInventory(model);
+		System.out.println();
+		return "design";
 	}
 
 	// What the heck? No clue
@@ -57,47 +74,51 @@ public class DesignController {
 
 	}
 
+	@GetMapping("/gen")
 	private String generateInventory(Model model) {
-		
-		inventory = new Inventory();
-		
-		
+
+		player = new Player();
+
 		ItemsDAO dao = new ItemsDAO();
 		dao.deleteAll();
 		dao.saveAll(Parser.getListOfItems());
-		
+
 		InventoryDAO dao2 = new InventoryDAO();
 		dao2.deleteAll();
-		
+
 		List<Item> items = dao.getByType(Type.ARMOR);
-		inventory.addItem(getRandomItem(items));
-		inventory.addItem(getRandomItem(items));
-		
+		player.getInventory().addItem(getRandomItem(items));
+		player.getInventory().addItem(getRandomItem(items));
+
 		items = dao.getByType(Type.ARTIFACT);
-		inventory.addItem(getRandomItem(items));
-		inventory.addItem(getRandomItem(items));
-		inventory.addItem(getRandomItem(items));
-		inventory.addItem(getRandomItem(items));
-		
+		player.getInventory().addItem(getRandomItem(items));
+		player.getInventory().addItem(getRandomItem(items));
+		player.getInventory().addItem(getRandomItem(items));
+		player.getInventory().addItem(getRandomItem(items));
+
 		items = dao.getByType(Type.HELM);
-		inventory.addItem(getRandomItem(items));
-		inventory.addItem(getRandomItem(items));
-		
+		player.getInventory().addItem(getRandomItem(items));
+		player.getInventory().addItem(getRandomItem(items));
+
 		items = dao.getByType(Type.WEAPON);
-		inventory.addItem(getRandomItem(items));
-		inventory.addItem(getRandomItem(items));
-		
-		dao2.saveAll(inventory.getItems());
-		
+		player.getInventory().addItem(getRandomItem(items));
+		player.getInventory().addItem(getRandomItem(items));
+
+		dao2.saveAll(player.getInventory().getItems());
+
 		items = dao2.findAll();
-		
-		model.addAttribute("items", items); 
+
+		player.setArmor(items.get(0));
+
+		player.updateStats();
+		model.addAttribute("player", player);
+
 		return "design";
 	}
 
 	private Item getRandomItem(List<Item> items) {
 		return items.get(new Random().nextInt(items.size()));
-		
+
 	}
 
 }

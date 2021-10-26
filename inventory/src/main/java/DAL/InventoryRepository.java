@@ -11,4 +11,5 @@ public interface InventoryRepository{
 	List<Item> findAll();
 	void saveAll(List<Item> items);
 	void deleteAll();
+	Item findById(int id);
 }

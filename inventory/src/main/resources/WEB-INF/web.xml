@@ -25,6 +25,16 @@
 	</context-param>
 
 
+	<servlet>
+		<servlet-name>DesignConroller</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DesignConroller</servlet-name>
+		<url-pattern>/design/send</url-pattern>
+	</servlet-mapping>
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>

@@ -28,6 +28,37 @@ public class InventoryDAO implements InventoryRepository {
 		return null;
 	}
 
+	
+	@Override
+	public Item findById(int id) {
+
+		Connection connection = getConnection();
+
+		try {
+			PreparedStatement statement = connection.prepareStatement(
+					"select item.id, item.name, item.type, item.attack, item.defence from item right join inventory on item.id = inventory.item "
+					+ "where item.id = " + id + ";");
+
+			ResultSet result = statement.executeQuery();
+
+			while (result.next() && result.getInt(1) == id) {
+				Item item = new Item();
+				item.setId(result.getInt(1));
+
+				item.setName(result.getString(2));
+				item.setType(Type.values()[result.getInt(3)]);
+				item.setDefense(result.getInt(4));
+				item.setAttack(result.getInt(5));
+
+				return item;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
 	@Override
 	public List<Item> findAll() {
 
